@@ -7,14 +7,11 @@ kind("SharedLib")
 language("C")
 targetdir("bin/%{cfg.buildcfg}")
 
-files({ "engine/**.h", "engine/**.c" })
+files({ "engine/src/**.h", "engine/src/**.c" })
 
 includedirs({
 	"engine/src", -- Use relative include
 	"/usr/include",
-	"/usr/include/GL",
-	"/usr/include/GLFW",
-	"/usr/include/cglm",
 })
 
 libdirs({ "/usr/lib" })
@@ -32,7 +29,7 @@ filter("configurations:Release")
 defines({ "NDEBUG" })
 optimize("On")
 
-project("test")
+project("testbed")
 kind("ConsoleApp")
 language("C")
 targetdir("bin/%{cfg.buildcfg}")
@@ -41,14 +38,10 @@ files({ "testbed/**.h", "testbed/**.c" })
 
 includedirs({
 	"engine/src", -- Include engine headers
-	"/usr/include",
-	"/usr/include/GL",
-	"/usr/include/GLFW",
-	"/usr/include/cglm",
 })
 
 libdirs({ "/usr/lib" })
-links({ "GL", "GLEW", "glfw", "m", "engine" })
+links({ "engine", "X11", "X11-xcb", "xcb" })
 
 filter("system:linux")
 buildoptions({ "-Wall" })

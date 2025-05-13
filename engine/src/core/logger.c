@@ -1,5 +1,6 @@
 #include "logger.h"
 #include "asserts.h"
+#include "platform/platform.h"
 
 // temporary
 #include <stdarg.h>
@@ -25,7 +26,7 @@ void shutdown_logging()
 
 void log_output(log_level level, const char* message, ...)
 {
-    const char* level_strings[6] = {
+    static const char* level_strings[6] = {
         "[FATAL]: ",
         "[ERROR]: ",
         "[WARN]: ",
@@ -33,17 +34,23 @@ void log_output(log_level level, const char* message, ...)
         "[DEBUG]: ",
         "[TRACE]: "
     };
-    // b8 is_error = level <= 2;
+    b8 is_error = level < LOG_LEVEL_WARN;
 
-    char formatted_message[3200], out_message[3200];
+    const i32 msg_length = 4096;
+
+    char formatted_message[msg_length], out_message[msg_length + 10];
     memset(formatted_message, 0, sizeof(formatted_message)); // redundant??
 
     __builtin_va_list arg_ptr; // to overcome windows being windowing
     va_start(arg_ptr, message);
-    vsnprintf(formatted_message, 3200, message, arg_ptr);
+    vsnprintf(formatted_message, msg_length, message, arg_ptr);
     va_end(arg_ptr);
 
-    snprintf(out_message, 3200, "%s%s\n", level_strings[level], formatted_message);
+    snprintf(out_message, msg_length + 10, "%s%s\n", level_strings[level], formatted_message);
 
-    printf("%s", out_message);
+    if (is_error) {
+        platform_console_write_error(out_message, level);
+    } else {
+        platform_console_write(out_message, level);
+    }
 }
