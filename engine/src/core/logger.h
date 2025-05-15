@@ -1,6 +1,7 @@
 #pragma once
 
 #include "defines.h"
+#include "platform/platform.h"
 #include <stdint.h>
 
 #define LOG_WARN_ENABLED 1

@@ -7,6 +7,8 @@ kind("SharedLib")
 language("C")
 targetdir("bin/%{cfg.buildcfg}")
 
+defines({ "KEXPORT", "KLINUX" })
+
 files({ "engine/src/**.h", "engine/src/**.c" })
 
 includedirs({

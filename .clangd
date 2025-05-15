@@ -1,2 +1,5 @@
 CompileFlags:
-  Add: -I/home/shulme10/projects/c/KhoPhee/engine/src/
+  Add:
+    - -DKEXPORT
+    - -DKLINUX
+    - -I/home/shulme10/projects/c/KhoPhee/engine/src/

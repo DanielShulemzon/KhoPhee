@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "platform/platform.h"
 
+#ifdef KLINUX
 #include <X11/XKBlib.h>
 #include <X11/Xlib-xcb.h>
 #include <X11/Xlib.h>
@@ -304,3 +305,5 @@ void platform_sleep(u64 ms)
     usleep((ms % 1000) * 1000);
 #endif
 }
+
+#endif
